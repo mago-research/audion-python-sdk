@@ -23,13 +23,11 @@
 - [설치](#설치)
 - [빠른 시작](#빠른-시작)
 - [API 문서](#api-문서)
-- [사용 예제](#-사용-예제)
-- [지원 파일 형식](#-지원-파일-형식)
-- [프로젝트 구조](#-프로젝트-구조)
-- [문서](#-문서)
-- [라이선스](#-라이선스)
-- [지원](#-지원)
-- [버전 히스토리](#-버전-히스토리)
+- [지원 파일 형식](#지원-파일-형식)
+- [문서](#문서)
+- [라이선스](#라이선스)
+- [지원](#지원)
+- [버전 히스토리](#버전-히스토리)
 
 ## 특징
 
@@ -47,10 +45,10 @@
 
 ## 설치
 
-pip을 사용하여 설치 (PyPI 패키지 이름: `audionlib`):
+pip을 사용하여 설치:
 
 ```bash
-pip install audionlib
+pip install audion-sdk
 ```
 
 또는 개발용으로 레포를 클론하여 editable 모드로 설치:
@@ -97,9 +95,30 @@ print(result)
 result = client.flow(
     flow="audion_vu",
     input_type="url",
-    input="<https://youtu.be/your-video-id>"
+    input="https://youtu.be/your-video-id"
 )
 print(result)
+```
+
+### 4. 자막 다운로드
+
+```python
+# 로컬 파일을 처리하고 SRT 자막 파일로 다운로드
+saved_path = client.download(
+    input_type="file",
+    input="path/to/your/audio.wav",
+    format="srt"
+)
+print(f"저장 경로: {saved_path}")
+
+# URL을 처리하고 SRT 자막 파일로 다운로드 (저장 경로 지정)
+saved_path = client.download(
+    input_type="url",
+    input="https://youtu.be/your-video-id",
+    format="srt",
+    output_path="./output/subtitle.srt"
+)
+print(f"저장 경로: {saved_path}")
 ```
 
 ## API 문서
@@ -161,6 +180,38 @@ client.flow(
 - `ValueError`: 지원하지 않는 input_type인 경우
 - `Exception`: API 호출 실패 시
 
+##### `download(input_type, input, format, output_path)`
+
+오디오/비디오를 처리하고 자막 파일(SRT/VTT)을 다운로드합니다. 내부적으로 `audion_vu` 플로우를 실행한 뒤 결과를 자막 파일로 저장합니다.
+
+```python
+client.download(
+    input_type: str,        # 입력 타입: "file" 또는 "url"
+    input: str,             # 파일 경로 또는 URL
+    format: str = "srt",    # 자막 포맷: "srt" 또는 "vtt"
+    output_path: str = None # 저장 경로 (선택)
+)
+```
+
+**매개변수:**
+
+- `input_type` (str): 입력 타입. `"file"` 또는 `"url"`
+- `input` (str): 처리할 파일의 경로 또는 URL
+- `format` (str, 선택): 다운로드할 자막 포맷. `"srt"` 또는 `"vtt"`. 기본값은 `"srt"`
+- `output_path` (str, 선택): 파일 저장 경로
+  - `None`인 경우: 현재 디렉토리에 `{원본파일명}_{documentId}.{format}`으로 저장
+  - 디렉토리 경로인 경우: 해당 디렉토리에 `{원본파일명}_{documentId}.{format}`으로 저장
+  - 파일 경로인 경우: 지정된 경로에 저장
+
+**반환값:**
+
+- `str`: 저장된 파일의 절대 경로
+
+**예외:**
+
+- `ValueError`: 지원하지 않는 format이거나 서버 응답에서 documentId를 추출할 수 없는 경우
+- `Exception`: API 호출 또는 파일 다운로드 실패 시
+
 ## 지원 파일 형식
 
 ### 오디오 형식
@@ -209,16 +260,37 @@ client.flow(
 
 ## 버전 히스토리
 
-- **v0.1.2**
-  - PyPI 패키지 구성 정리 (`pyproject.toml` 기반 빌드)
-  - SDK 내부 구조 정리 (로그 유틸과 코어/헬퍼 모듈 리팩토링)
-  - 문서 개선 (README 정리 및 예제 링크 정리)
+<details>
+<summary><b>v0.1.7</b></summary>
 
-- **v0.1.0**
-  - 초기 릴리스
-  - 기본 flow API 지원
-  - 파일 및 URL 입력 지원
-  - 다중 오디오/비디오 형식 지원
+- `output_path`에 존재하지 않는 디렉토리 경로 지정 시 자동 생성 처리 개선
+- 다운로드 파일명에 원본 파일명 포함 (`{원본파일명}_{documentId}.{format}`)
+- flow 응답 구조(`content.documentId`) 대응 수정
+- URL 입력 검증 추가
+- 자막 다운로드 기능 추가 (`download` 메서드)
+- SRT/VTT 포맷 자막 파일 다운로드 지원
+- 자막 다운로드 예제 추가
+
+</details>
+
+<details>
+<summary><b>v0.1.2</b></summary>
+
+- PyPI 패키지 구성 정리 (`pyproject.toml` 기반 빌드)
+- SDK 내부 구조 정리 (로그 유틸과 코어/헬퍼 모듈 리팩토링)
+- 문서 개선 (README 정리 및 예제 링크 정리)
+
+</details>
+
+<details>
+<summary><b>v0.1.0</b></summary>
+
+- 초기 릴리스
+- 기본 flow API 지원
+- 파일 및 URL 입력 지원
+- 다중 오디오/비디오 형식 지원
+
+</details>
 
 <div align="center">
   <p>Made with ❤️ by <a href="https://magovoice.com">MAGO</a></p>

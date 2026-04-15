@@ -6,8 +6,8 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "audionlib"
-version = "0.1.2"
+name = "audion-sdk"
+version = "0.1.7"
 description = "Audion Python SDK - 간편하게 음성 AI 기능을 통합하기 위한 Python 클라이언트 라이브러리"
 readme = "README.md"
 requires-python = ">=3.10"

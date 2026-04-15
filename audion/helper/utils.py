@@ -18,3 +18,13 @@ def get_media_type(file_path: str) -> str:
         return "video/mp4"
     else:
         raise ValueError(f"Unsupported file extension: {extension}")
+
+
+def validate_url(url: str) -> None:
+    """
+    Validate that the given string is a valid HTTP/HTTPS URL.
+    """
+    if not url.startswith("http://") and not url.startswith("https://"):
+        raise ValueError(
+            f"Invalid URL: '{url}'. URL must start with http:// or https://"
+        )

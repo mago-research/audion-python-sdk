@@ -9,3 +9,6 @@ AUDIO_FILE_EXTENSION = [".wav", ".mp3", ".m4a", ".ogg", ".flac", ".aac", ".wma",
 
 # Supported video file extensions
 VIDEO_FILE_EXTENSION = [".mp4", ".mov", ".avi", ".mkv", ".webm", ".wmv", ".flv", ".mpeg", ".mpg", ".m4v"]
+
+# Supported download formats for subtitle files
+SUPPORTED_DOWNLOAD_FORMATS = ["srt", "vtt"]

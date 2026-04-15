@@ -32,7 +32,8 @@ class AudionClient(BaseAudionClient):
         )
 
 def main():
-    client = AudionClient(api_key="mk-h19xW7wb_tjMyja8OpOYeGgjWtzSnGajtRSF55yH7L-qvYes")
+    import os
+    client = AudionClient(api_key=os.environ.get("AUDION_API_KEY", ""))
     result = client.flow(
         flow="audion_vu",
         input_type="file",

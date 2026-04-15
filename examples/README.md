@@ -14,7 +14,7 @@ export AUDION_API_KEY='your-api-key-here'
 
 또는 스크립트를 사용하여 실행:
 
-```bash
+```bash 
 AUDION_API_KEY='your-api-key-here' python examples/example_file.py
 ```
 
@@ -28,7 +28,7 @@ source venv/bin/activate
 
 ## 예제 목록
 
-### 📁 `example_file.py`
+### `example_file.py`
 
 로컬 오디오/비디오 파일을 처리하는 예제입니다.
 
@@ -42,7 +42,7 @@ python examples/example_file.py samples/audio.wav
 python examples/example_file.py /path/to/video.mp4
 ```
 
-### 🌐 `example_url.py`
+### `example_url.py`
 
 YouTube 등의 URL을 처리하는 예제입니다.
 
@@ -56,6 +56,21 @@ python examples/example_url.py https://youtu.be/abc123
 python examples/example_url.py https://www.youtube.com/watch?v=abc123
 ```
 
+### `example_download.py`
+
+오디오/비디오를 처리하고 자막 파일(SRT/VTT)을 다운로드하는 예제입니다.
+
+**실행 방법:**
+
+```bash
+python examples/example_download.py <file_path_or_url> [format] [output_path]
+
+# 예시
+python examples/example_download.py samples/audio.wav
+python examples/example_download.py samples/audio.wav srt ./output/
+python examples/example_download.py https://youtu.be/abc123 srt
+```
+
 ## 빠른 시작
 
 ```bash
@@ -67,6 +82,9 @@ python examples/example_file.py samples/audio.wav
 
 # URL 처리
 python examples/example_url.py https://youtu.be/abc123
+
+# 자막 다운로드
+python examples/example_download.py https://youtu.be/abc123 srt
 ```
 
 ## 지원하는 Flow
@@ -84,4 +102,3 @@ python examples/example_url.py https://youtu.be/abc123
 `.mp4`, `.mov`, `.avi`, `.mkv`, `.webm`, `.wmv`, `.flv` 등
 
 자세한 내용은 [메인 README](../README.md)를 참조하세요.
-
